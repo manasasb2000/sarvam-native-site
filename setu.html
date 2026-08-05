@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setu — Sarvam MCP Server</title>
+<meta name="description" content="Setu: an open-source, pip-installable MCP server exposing Sarvam AI's full API surface as typed tools. Install, connect to Claude Desktop, and call Sarvam speech/translation/chat/document tools in minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{font-family:'Inter',var(--sans)}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--text-dim);border:1px solid var(--border);border-radius:999px;padding:5px 12px;background:var(--bg-soft)}
+  .pill.ok{color:var(--green);border-color:rgba(74,222,128,0.35)}
+  .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .install-hero{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;background:#07080c;border:1px solid var(--border);border-radius:11px;padding:12px 16px;color:#cbd2e0}
+  .install-hero .dollar{color:var(--text-faint)}
+  .install-hero button{background:none;border:none;color:var(--accent);cursor:pointer;font-family:inherit;font-size:0.8rem}
+  /* code block */
+  .code{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#07080c;margin-top:14px}
+  .code-head{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--border-soft);background:var(--bg-soft)}
+  .code-head .lang{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.08em}
+  .code-head .copy{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text-dim);font-size:0.72rem;padding:3px 10px;cursor:pointer;font-family:'JetBrains Mono',monospace}
+  .code-head .copy:hover{color:var(--text);border-color:#3a3f4d}
+  .code pre{margin:0;padding:16px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:0.82rem;line-height:1.65;color:#cbd2e0;white-space:pre}
+  .code .cm{color:#6b7280}      /* comment */
+  .code .kw{color:#82aaff}      /* command */
+  .code .st{color:#c3e88d}      /* string */
+  /* numbered steps */
+  .steps{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .step .num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(109,139,255,0.12);color:var(--accent);border:1px solid rgba(109,139,255,0.3);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+  .step .body{flex:1}
+  .step .body h5{font-size:0.98rem;margin-bottom:3px}
+  .step .body p{font-size:0.88rem;color:var(--text-dim)}
+  .step .body code{font-family:'JetBrains Mono',monospace;font-size:0.82rem;background:var(--bg-soft);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:#cbd2e0}
+  /* tools table */
+  .tool-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:0.88rem}
+  .tool-table th,.tool-table td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--border-soft);vertical-align:top}
+  .tool-table th{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-faint);font-weight:600}
+  .tool-table td.name{font-family:'JetBrains Mono',monospace;color:var(--accent);white-space:nowrap;font-size:0.82rem}
+  .tool-table td.model{font-family:'JetBrains Mono',monospace;color:var(--text-dim);font-size:0.78rem;white-space:nowrap}
+  .tool-table tr:hover td{background:var(--bg-soft)}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Sarvam&nbsp;Native</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="setu.html" class="cta">Setu</a>
+      <a href="vaani.html">Vaani</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero" style="text-align:center">
+  <div class="wrap">
+    <a class="back" href="index.html" style="display:inline-block">← Back to overview</a>
+    <div><span class="badge setu">Open-source · pip-installable · MCP server</span></div>
+    <h1>Setu</h1>
+    <p class="lead" style="margin-inline:auto">A <strong>Model Context Protocol</strong> server that exposes Sarvam AI's entire API surface as <strong>typed tools</strong> — so any MCP agent (Claude Desktop, Cursor, Claude Code, LangGraph) can use Sarvam speech, translation, chat and document tools in minutes.</p>
+
+    <div class="hero-badges">
+      <span class="pill">Python 3.11+</span>
+      <span class="pill">8 typed tools</span>
+      <span class="pill">stdio + streamable-HTTP</span>
+      <span class="pill ok">MIT license</span>
+      <span class="pill ok">CI · mypy --strict · 87% cov</span>
+    </div>
+
+    <div class="hero-cta">
+      <div class="install-hero"><span class="dollar">$</span> pip install setu-mcp <button onclick="copyText('pip install setu-mcp', this)">copy</button></div>
+    </div>
+    <div class="hero-cta" style="margin-top:14px">
+      <a class="btn" href="https://github.com/manasasb2000/setu-mcp" target="_blank">★ View on GitHub</a>
+      <a class="btn primary" href="#tools">Try the tools ↓</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── What it is / uses ─────────────────────────────────────────── -->
+<section style="padding-top:26px">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:24px">
+      <div class="kicker">What you get</div>
+      <h2>Sarvam's Indic AI stack, as agent tools</h2>
+      <p>Install one package and any MCP agent can transcribe Hindi calls, speak replies, translate &amp; transliterate, detect language, chat with tool-calling, and digitise KYC documents — every call typed, retried, and priced.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install & run ─────────────────────────────────────────────── -->
+<section style="padding-top:6px">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:24px">
+      <div class="kicker">Quickstart</div>
+      <h2>Install &amp; run in 3 steps</h2>
+      <p>Defaults to <code style="font-family:'JetBrains Mono',monospace">mock</code> mode — deterministic fixtures, no API key, no credits burned.</p>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="code">
+          <div class="code-head"><span class="lang">bash — install</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm"># from PyPI</span>
+<span class="kw">pip install</span> setu-mcp
+
+<span class="cm"># or run without installing</span>
+<span class="kw">uvx</span> setu-mcp
+
+<span class="cm"># or from source</span>
+<span class="kw">pip install</span> <span class="st">git+https://github.com/manasasb2000/setu-mcp.git</span></pre>
+        </div>
+
+        <div class="code">
+          <div class="code-head"><span class="lang">bash — configure (optional)</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm"># mock is the default — nothing to set</span>
+<span class="kw">export</span> SETU_MODE=mock
+
+<span class="cm"># for real Sarvam calls, switch to live:</span>
+<span class="cm"># export SETU_MODE=live</span>
+<span class="cm"># export SARVAM_API_KEY=sk_...   (dashboard.sarvam.ai)</span></pre>
+        </div>
+
+        <div class="code">
+          <div class="code-head"><span class="lang">bash — run</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm"># stdio — for Claude Desktop / Cursor / local agents</span>
+<span class="kw">setu</span>
+
+<span class="cm"># or an HTTP endpoint at http://127.0.0.1:8000/mcp</span>
+<span class="kw">setu</span> --transport streamable-http</pre>
+        </div>
+      </div>
+
+      <div>
+        <div class="info-card" style="height:100%">
+          <h4>Connect to Claude Desktop</h4>
+          <div class="steps">
+            <div class="step"><div class="num">1</div><div class="body"><h5>Install the package</h5><p><code>pip install setu-mcp</code> into a Python 3.11+ environment.</p></div></div>
+            <div class="step"><div class="num">2</div><div class="body"><h5>Add it to the config</h5><p>Claude Desktop → <strong>Settings → Developer → Edit Config</strong>, then add the block below.</p></div></div>
+            <div class="step"><div class="num">3</div><div class="body"><h5>Restart &amp; use it</h5><p>Reopen Claude Desktop, click the 🔌 tools icon, and ask: <em>"Use sarvam_transcribe on this Hindi audio."</em></p></div></div>
+          </div>
+          <div class="code" style="margin-top:16px">
+            <div class="code-head"><span class="lang">claude_desktop_config.json</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+<pre>{
+  <span class="st">"mcpServers"</span>: {
+    <span class="st">"setu"</span>: {
+      <span class="st">"command"</span>: <span class="st">"setu"</span>,
+      <span class="st">"env"</span>: { <span class="st">"SETU_MODE"</span>: <span class="st">"mock"</span> }
+    }
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Interactive explorer ──────────────────────────────────────── -->
+<section id="tools" style="padding-top:26px">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:20px">
+      <div class="kicker">Try it live</div>
+      <h2>Interactive tool explorer</h2>
+      <p>Pick a tool, tweak the inputs, and run it — right here in your browser (mock fixtures, no key needed).</p>
+    </div>
+    <div class="demo-box">
+      <div class="demo-head">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <span class="title">setu-mcp · tool explorer</span>
+        <span class="demo-note">SETU_MODE=mock · no credits burned</span>
+      </div>
+      <div class="explorer">
+        <div class="tool-list" id="toolList"></div>
+        <div class="tool-panel" id="toolPanel"></div>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--text-faint);font-size:0.82rem;margin-top:14px;font-family:'JetBrains Mono',monospace">
+      Mock responses mirror the real tool schemas. In live mode these hit Saaras / Bulbul / Mayura / Sarvam-105B / Parse.
+    </p>
+  </div>
+</section>
+
+<!-- ── The tools ─────────────────────────────────────────────────── -->
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:20px">
+      <div class="kicker">The tool surface</div>
+      <h2>8 typed tools, one install</h2>
+    </div>
+    <div class="demo-box" style="padding:6px 10px">
+      <table class="tool-table">
+        <thead><tr><th>Tool</th><th>Model</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td class="name">setu_ping</td><td class="model">—</td><td>Health check — confirms the server is wired up and reports mode.</td></tr>
+          <tr><td class="name">sarvam_transcribe</td><td class="model">Saaras v3</td><td>Speech → text, including code-mixed (Hinglish) audio.</td></tr>
+          <tr><td class="name">sarvam_speak</td><td class="model">Bulbul v3</td><td>Text → natural speech (base64 WAV), 11 languages, 30+ voices.</td></tr>
+          <tr><td class="name">sarvam_translate</td><td class="model">Mayura v1</td><td>Translate between English and 22 Indian languages.</td></tr>
+          <tr><td class="name">sarvam_transliterate</td><td class="model">Mayura</td><td>Convert script while keeping pronunciation (नमस्ते ↔ namaste).</td></tr>
+          <tr><td class="name">sarvam_identify_language</td><td class="model">text-lid</td><td>Detect the language + script of a piece of text.</td></tr>
+          <tr><td class="name">sarvam_chat</td><td class="model">Sarvam-105B / 30B</td><td>Chat / reasoning with OpenAI-compatible tool-calling.</td></tr>
+          <tr><td class="name">sarvam_parse_document</td><td class="model">Parse</td><td>PDF / image → structured JSON fields (KYC-ready).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align:center;color:var(--text-faint);font-size:0.82rem;margin-top:12px;font-family:'JetBrains Mono',monospace">
+      Every result also carries <code>cost_inr</code>, <code>latency_ms</code>, and a <code>request_id</code>.
+    </p>
+  </div>
+</section>
+
+<!-- ── How it works ──────────────────────────────────────────────── -->
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:24px">
+      <div class="kicker">How it works</div>
+      <h2>Every call: validated, retried, priced</h2>
+    </div>
+    <div class="diagram">MCP client (Claude Desktop / Cursor / LangGraph)
+        │  stdio  OR  streamable-HTTP / SSE
+        ▼
+┌──────────────────── SETU MCP SERVER ────────────────────┐
+│  FastMCP router → typed tool layer (Pydantic in/out)    │
+│      validate → rate-limit → retry/backoff →            │
+│      call Sarvam → normalize errors → telemetry         │
+│                  │                    │                 │
+│          ┌───────┴──────┐      ┌──────┴──────┐          │
+│          │ MODE: live   │      │ OTel spans  │          │
+│          │      / mock  │      │ cost+latency│          │
+│          └───────┬──────┘      └─────────────┘          │
+└──────────────────┼──────────────────────────────────────┘
+                   ▼
+   Sarvam APIs — Saaras · Bulbul · Mayura · Sarvam-30B/105B · Parse</div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>Reliability</h4>
+        <ul>
+          <li>Exponential backoff + jitter on 5xx / network errors; never retries 4xx except 429.</li>
+          <li>Client-side token-bucket rate limiter; respects <code>Retry-After</code> on 429.</li>
+          <li>Typed errors surfaced to the agent on final failure.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Observability</h4>
+        <ul>
+          <li>Every call wrapped in an OpenTelemetry span.</li>
+          <li>Attributes: model, endpoint, latency_ms, input units, computed cost_inr.</li>
+          <li>Maintained INR pricing table per model / endpoint.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Two transports</h4>
+        <ul>
+          <li><code>stdio</code> for local IDE / desktop agents.</li>
+          <li><code>streamable-http</code> / SSE for hosted, remote use.</li>
+          <li>Both served from one FastMCP server object.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Mock vs live</h4>
+        <ul>
+          <li><code>SETU_MODE=mock|live</code> switch.</li>
+          <li>Mock serves deterministic fixtures — CI &amp; contributors never burn credits.</li>
+          <li>Demos work fully offline.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Deploy ────────────────────────────────────────────────────── -->
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:20px">
+      <div class="kicker">Deploy anywhere</div>
+      <h2>Run it as a container</h2>
+      <p>A multi-stage, non-root image serves the HTTP transport out of the box.</p>
+    </div>
+    <div class="code" style="max-width:720px;margin-inline:auto">
+      <div class="code-head"><span class="lang">bash — docker</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm"># build and run the HTTP server on :8000/mcp</span>
+<span class="kw">docker build</span> -t setu-mcp .
+<span class="kw">docker run</span> --rm -p 8000:8000 setu-mcp
+
+<span class="cm"># or one command with compose</span>
+<span class="kw">docker compose up</span> --build
+
+<span class="cm"># live mode</span>
+<span class="kw">docker run</span> --rm -p 8000:8000 -e SETU_MODE=live -e SARVAM_API_KEY=sk_... setu-mcp</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="muted">Setu — Sarvam MCP Server · <code style="font-family:'JetBrains Mono',monospace">pip install setu-mcp</code> · MIT. Tool explorer runs mock fixtures in-browser.</div>
+    <div class="links">
+      <a href="https://github.com/manasasb2000/setu-mcp" target="_blank">GitHub</a>
+      <a href="index.html">Home</a>
+      <a href="vaani.html">Vaani →</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* copy helpers */
+function copyText(text, btn){
+  navigator.clipboard.writeText(text).then(()=>{ const o=btn.textContent; btn.textContent='copied ✓'; setTimeout(()=>btn.textContent=o,1200); });
+}
+function copyCode(btn){
+  const pre = btn.closest('.code').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(()=>{ const o=btn.textContent; btn.textContent='Copied ✓'; setTimeout(()=>btn.textContent=o,1200); });
+}
+
+/* ── interactive tool explorer ── */
+const TOOLS = [
+  {
+    name: "sarvam_transcribe",
+    desc: "Speech-to-text over Saaras v3. Supports transcribe, translate, verbatim, translit and codemix modes.",
+    fields: [
+      {k:"audio_url", label:"audio_url", type:"text", val:"https://…/hindi_query.wav"},
+      {k:"language_code", label:"language_code", type:"select", opts:["auto","hi-IN","en-IN","ta-IN","bn-IN"], val:"auto"},
+      {k:"mode", label:"mode", type:"select", opts:["codemix","transcribe","translate","verbatim","translit"], val:"codemix"}
+    ],
+    run: (f)=>({
+      text: "मेरा EMI कितना बचा है, aur next due date kya hai?",
+      language: "hi-IN",
+      mode: f.mode,
+      confidence: 0.94,
+      cost_inr: 0.018,
+      latency_ms: 412,
+      request_id: "a1b2c3d4e5f6"
+    })
+  },
+  {
+    name: "sarvam_speak",
+    desc: "Text-to-speech over Bulbul v3. 11 languages, 30+ speakers, streaming with sub-250ms first byte.",
+    fields: [
+      {k:"text", label:"text", type:"textarea", val:"आपका बकाया EMI ₹4,250 है। अगली due date 5 अगस्त है।"},
+      {k:"target_language_code", label:"target_language_code", type:"select", opts:["hi-IN","en-IN","ta-IN","kn-IN"], val:"hi-IN"},
+      {k:"speaker", label:"speaker", type:"select", opts:["anushka","vidya","shubh","ritu"], val:"anushka"}
+    ],
+    run: (f)=>({
+      audio_base64: "UklGRoQAAABXQVZFZm10IBAAAAAB… (mock)",
+      format: "wav",
+      speaker: f.speaker,
+      chars: f.text.length,
+      cost_inr: 0.019,
+      latency_ms: 238,
+      request_id: "b2c3d4e5f6a7"
+    })
+  },
+  {
+    name: "sarvam_translate",
+    desc: "Translation via Mayura v1 (code-mixed) or Sarvam-Translate v1 (22 languages). auto source detection.",
+    fields: [
+      {k:"input", label:"input", type:"textarea", val:"How much of my loan is outstanding?"},
+      {k:"source_language_code", label:"source_language_code", type:"select", opts:["auto","en-IN","hi-IN"], val:"auto"},
+      {k:"target_language_code", label:"target_language_code", type:"select", opts:["hi-IN","ta-IN","bn-IN","kn-IN"], val:"hi-IN"}
+    ],
+    run: (f)=>({
+      translated_text: "मेरे लोन का कितना बकाया है?",
+      source_language_code: "en-IN",
+      target_language_code: f.target_language_code,
+      model: "mayura:v1",
+      cost_inr: 0.014,
+      latency_ms: 187,
+      request_id: "c3d4e5f6a7b8"
+    })
+  },
+  {
+    name: "sarvam_chat",
+    desc: "Chat / reasoning / tool-calling on Sarvam-30B or Sarvam-105B. OpenAI-compatible tools + tool_choice.",
+    fields: [
+      {k:"messages", label:"user message", type:"textarea", val:"Summarise this policy clause in one line for a caller."},
+      {k:"model", label:"model", type:"select", opts:["sarvam-105b","sarvam-30b"], val:"sarvam-105b"},
+      {k:"temperature", label:"temperature", type:"text", val:"0.2"}
+    ],
+    run: (f)=>({
+      content: "The premium grace period is 15 days; cover continues but no claim is payable during a lapse.",
+      model: f.model,
+      tool_calls: null,
+      finish_reason: "stop",
+      usage: {prompt_tokens: 214, completion_tokens: 29, total_tokens: 243},
+      cost_inr: 0.044,
+      latency_ms: 690,
+      request_id: "d4e5f6a7b8c9"
+    })
+  },
+  {
+    name: "sarvam_transliterate",
+    desc: "Script conversion preserving pronunciation. Indic ↔ English, with optional spoken form.",
+    fields: [
+      {k:"input", label:"input", type:"text", val:"main office ja raha hun"},
+      {k:"source_language_code", label:"source_language_code", type:"select", opts:["auto","hi-IN","en-IN"], val:"auto"},
+      {k:"target_language_code", label:"target_language_code", type:"select", opts:["hi-IN","en-IN","ta-IN"], val:"hi-IN"}
+    ],
+    run: (f)=>({
+      transliterated_text: "मैं ऑफिस जा रहा हूँ",
+      source_language_code: "en-IN",
+      target_language_code: f.target_language_code,
+      cost_inr: 0.009,
+      latency_ms: 96,
+      request_id: "e5f6a7b8c9d0"
+    })
+  },
+  {
+    name: "sarvam_identify_language",
+    desc: "Detect the language and script of a piece of text (BCP-47 + ISO-15924).",
+    fields: [
+      {k:"input", label:"input", type:"text", val:"kal payment kar dunga sir"}
+    ],
+    run: ()=>({
+      language_code: "hi-IN",
+      script_code: "Latn",
+      cost_inr: 0.002,
+      latency_ms: 71,
+      request_id: "f6a7b8c9d0e1"
+    })
+  },
+  {
+    name: "sarvam_parse_document",
+    desc: "Document digitisation via Parse. PDF / image → structured JSON fields (KYC-ready).",
+    fields: [
+      {k:"file_url", label:"file_url", type:"text", val:"https://…/policy_kyc.pdf"},
+      {k:"output", label:"output", type:"select", opts:["structured_json","text"], val:"structured_json"}
+    ],
+    run: ()=>({
+      pages: 3,
+      fields: {policy_no: "BFSI-2291-A", holder: "R. Menon", premium_inr: 18400, due_date: "2026-08-05"},
+      tables: 1,
+      cost_inr: 1.5,
+      latency_ms: 1320,
+      request_id: "a7b8c9d0e1f2"
+    })
+  }
+];
+
+function syntaxHi(obj){
+  let json = JSON.stringify(obj, null, 2);
+  json = json.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, m=>{
+    let cls="json-num";
+    if(/^"/.test(m)) cls = /:$/.test(m) ? "json-key" : "json-str";
+    else if(/true|false/.test(m)) cls="json-bool";
+    else if(/null/.test(m)) cls="json-bool";
+    return '<span class="'+cls+'">'+m+'</span>';
+  });
+}
+
+let active = 0;
+const listEl = document.getElementById('toolList');
+const panelEl = document.getElementById('toolPanel');
+
+function renderList(){
+  listEl.innerHTML = TOOLS.map((t,i)=>
+    `<div class="tool-item ${i===active?'active':''}" data-i="${i}">${t.name}</div>`).join('');
+  listEl.querySelectorAll('.tool-item').forEach(el=>{
+    el.onclick = ()=>{ active = +el.dataset.i; renderList(); renderPanel(); };
+  });
+}
+
+function renderPanel(){
+  const t = TOOLS[active];
+  panelEl.innerHTML = `
+    <h4>${t.name}</h4>
+    <div class="desc">${t.desc}</div>
+    ${t.fields.map(f=>fieldHtml(f)).join('')}
+    <div class="run-row">
+      <button class="btn primary" id="runBtn">▶ Run tool</button>
+      <span class="demo-note" id="runHint">calls mock fixture</span>
+    </div>
+    <div>
+      <div class="tstat" style="margin-bottom:6px"><span class="lbl">response</span></div>
+      <div class="output" id="out"><pre style="color:var(--text-faint)">// press Run to call ${t.name}</pre></div>
+    </div>
+    <div class="telemetry" id="telemetry"></div>
+  `;
+  document.getElementById('runBtn').onclick = runTool;
+}
+
+function fieldHtml(f){
+  if(f.type==='select'){
+    return `<div class="field"><label>${f.label}</label><select data-k="${f.k}">${f.opts.map(o=>`<option ${o===f.val?'selected':''}>${o}</option>`).join('')}</select></div>`;
+  }
+  if(f.type==='textarea'){
+    return `<div class="field"><label>${f.label}</label><textarea data-k="${f.k}" rows="2">${f.val}</textarea></div>`;
+  }
+  return `<div class="field"><label>${f.label}</label><input data-k="${f.k}" value="${f.val}"></div>`;
+}
+
+function runTool(){
+  const t = TOOLS[active];
+  const inputs = {};
+  panelEl.querySelectorAll('[data-k]').forEach(el=> inputs[el.dataset.k] = el.value);
+  const out = document.getElementById('out');
+  const tel = document.getElementById('telemetry');
+  out.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
+  tel.innerHTML = '';
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true; btn.style.opacity = 0.6;
+  const delay = 500 + Math.random()*500;
+  setTimeout(()=>{
+    const res = t.run(inputs);
+    out.innerHTML = `<pre>${syntaxHi(res)}</pre>`;
+    const lat = res.latency_ms || Math.round(delay);
+    const cost = res.cost_inr != null ? res.cost_inr : 0.1;
+    tel.innerHTML = `
+      <div class="tstat"><span class="lbl">latency</span> <span class="val">${lat} ms</span></div>
+      <div class="tstat"><span class="lbl">cost</span> <span class="val">₹${cost.toFixed(3)}</span></div>
+      <div class="tstat"><span class="lbl">status</span> <span class="val">200 OK</span></div>
+      <div class="tstat"><span class="lbl">otel</span> <span class="val">span emitted ✓</span></div>`;
+    btn.disabled = false; btn.style.opacity = 1;
+  }, delay);
+}
+
+renderList();
+renderPanel();
+</script>
+</body>
+</html>

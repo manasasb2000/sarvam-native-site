@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaani — Multilingual Voice Agent for BFSI</title>
+<meta name="description" content="Vaani: a real-time code-mixed voice agent for BFSI servicing and soft-collections, built on Sarvam + Pipecat.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>body{font-family:'Inter',var(--sans)}</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Sarvam&nbsp;Native</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="setu.html">Setu</a>
+      <a href="vaani.html" class="cta">Vaani</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="wrap">
+    <a class="back" href="index.html">← Back to overview</a>
+    <div><span class="badge vaani">Flagship demo · Voice agent</span></div>
+    <h1>Vaani</h1>
+    <p class="lead">A real-time, code-mixed <strong>voice agent for BFSI</strong> servicing and soft-collections. The caller speaks Hindi / Hinglish; Vaani answers grounded questions over policy docs, calls backend tools, and hands off to a human when confidence is low.</p>
+  </div>
+</header>
+
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="demo-box">
+      <div class="demo-head">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <span class="title">vaani · live call · +91 ••• collections line</span>
+        <span class="demo-note" id="latencyNote">turn latency ~1.2s</span>
+      </div>
+      <div class="convo" id="convo"></div>
+      <div class="convo-foot">
+        <div class="mic" id="mic">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
+        <button class="btn primary" id="playBtn">▶ Play the call</button>
+        <button class="btn" id="resetBtn">Reset</button>
+        <span class="demo-note" id="status">Silero VAD idle · Saaras streaming ready</span>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--text-faint);font-size:0.82rem;margin-top:14px;font-family:'JetBrains Mono',monospace">
+      Scripted playback of a real turn flow: Saaras STT → RAG grounding → Sarvam-105B tool calls → Bulbul TTS, with barge-in and escalation.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:24px">
+      <div class="kicker">Under the hood</div>
+      <h2>The Pipecat pipeline</h2>
+    </div>
+    <div class="diagram">Caller ──(WebRTC / SIP)──► TRANSPORT (Daily / LiveKit / Exotel)
+        │ audio
+        ▼
+  VAD (Silero) → Saaras STT (codemix, streaming) → ROUTER
+        │
+        ├─ Sarvam-30B   fast smalltalk / clarify
+        └─ Sarvam-105B  tool-calling + grounded answers
+              ├─ RAG retrieve (pgvector) → groundedness guard
+              └─ tool calls → FastAPI mock CBS / LOS backend
+        │
+        ▼  response text → Bulbul v3 TTS (streaming) → caller
+        ▲  barge-in / interruption handling throughout
+   low confidence ─► HUMAN-IN-THE-LOOP (warm transfer)
+   OpenTelemetry traces + PII redaction span the whole pipeline</div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>Latency budget &lt; ~1.5s</h4>
+        <ul>
+          <li>Streaming STT partials; tokens streamed straight into the Bulbul WebSocket.</li>
+          <li>Fast path stays on Sarvam-30B; only escalates to 105B when tools / reasoning are needed.</li>
+          <li>First TTS byte ~sub-250ms.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Grounding &amp; tools</h4>
+        <ul>
+          <li>Answers only from retrieved KB chunks — deflects to a human when unsure.</li>
+          <li>Tools: account status, EMI, outstanding balance, callback, disposition, escalate.</li>
+          <li>Every tool-call argument validated against a Pydantic schema before execution.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Named failure modes</h4>
+        <ul>
+          <li>Noisy code-mix WER, hallucinated tool args, turn-taking latency spikes, double-talk.</li>
+          <li>Rupee / name normalisation before TTS; PII redaction with Presidio.</li>
+          <li>Per-call budget + max-turn guard against runaway cost.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Evals-first harness</h4>
+        <ul>
+          <li>WER (jiwer), tool-call accuracy, groundedness (RAGAs / DeepEval).</li>
+          <li>p50 / p95 latency and cost per interaction from telemetry.</li>
+          <li>Lite suite wired into CI as a regression gate.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="muted">Vaani — Multilingual Voice Agent for BFSI. Conversation above is scripted playback of the real turn flow.</div>
+    <div class="links"><a href="index.html">Home</a><a href="setu.html">Setu →</a></div>
+  </div>
+</footer>
+
+<script>
+const SCRIPT = [
+  { who:"user", text:"Haan ji, mujhe apne loan ke baare mein baat karni thi.", tags:[["stt","Saaras · codemix · hi-IN"]] },
+  { who:"agent", text:"Namaste! Main Vaani bol rahi hoon. Zaroor — aap apna registered mobile number bata dijiye taaki main account verify kar sakoon.", tags:[["tts","Bulbul v3 · anushka"]] },
+  { who:"user", text:"98••••4412", tags:[["stt","Saaras · verbatim"]] },
+  { who:"agent", text:"Verify ho gaya, dhanyavaad. Aapke account ki details laa rahi hoon…", tags:[["tool","get_account_status(mobile=98••••4412)"]] },
+  { who:"agent", text:"Aapka outstanding balance ₹42,500 hai, aur is mahine ka EMI ₹4,250 hai jiski due date 5 August hai.", tags:[["tool","get_emi_details → ₹4,250"],["tts","Bulbul · numerals normalised"]] },
+  { who:"user", text:"Achha, aur agar main late karun toh kitna charge lagega?", tags:[["stt","Saaras · codemix"]] },
+  { who:"agent", text:"Late payment par 2% monthly interest lagta hai overdue amount par — yeh aapke policy document ke clause 7.2 mein diya hai.", tags:[["rag","pgvector top-k · clause 7.2 · grounded ✓"]] },
+  { who:"user", text:"Interest waive ho sakta hai kya? Main kal hi pay kar dunga.", tags:[["stt","Saaras · codemix"]] },
+  { who:"agent", text:"Interest waiver ka decision main nahi le sakti — yeh ek financial commitment hai. Main aapko humaare agent se turant connect karti hoon jo yeh dekh sakte hain.", tags:[["esc","confidence 0.41 < 0.6 · escalate_to_human()"]] },
+  { who:"user", text:"Theek hai, aur ek callback bhi schedule kar dijiye shaam 6 baje.", tags:[["stt","Saaras · codemix"]] },
+  { who:"agent", text:"Ho gaya — aapka callback aaj shaam 6 baje ke liye schedule kar diya hai. Warm transfer ho raha hai, ek agent line par aa rahe hain. Dhanyavaad!", tags:[["tool","schedule_callback(18:00) ✓"],["tool","log_disposition('escalated') ✓"]] }
+];
+
+const convo = document.getElementById('convo');
+const mic = document.getElementById('mic');
+const statusEl = document.getElementById('status');
+const playBtn = document.getElementById('playBtn');
+const resetBtn = document.getElementById('resetBtn');
+let playing = false, idx = 0, timer = null;
+
+function tagHtml(t){ return `<span class="tagpill ${t[0]}">${t[1]}</span>`; }
+
+function addMsg(m){
+  const el = document.createElement('div');
+  el.className = 'msg ' + m.who;
+  el.innerHTML = `<div class="who">${m.who==='user'?'Caller':'Vaani'}</div>${m.text}
+    <div class="tags">${(m.tags||[]).map(tagHtml).join('')}</div>`;
+  convo.appendChild(el);
+  convo.scrollTop = convo.scrollHeight;
+}
+
+function step(){
+  if(idx >= SCRIPT.length){ stop(true); return; }
+  const m = SCRIPT[idx];
+  if(m.who==='user'){ mic.classList.add('live'); statusEl.textContent = 'Silero VAD · speech detected · Saaras transcribing…'; }
+  else { mic.classList.remove('live'); statusEl.textContent = 'Sarvam-105B reasoning · Bulbul streaming reply…'; }
+  addMsg(m);
+  idx++;
+  timer = setTimeout(step, m.who==='user' ? 1400 : 2100);
+}
+
+function start(){
+  if(playing) return;
+  if(idx >= SCRIPT.length){ convo.innerHTML=''; idx=0; }
+  playing = true; playBtn.textContent = '⏸ Playing…'; playBtn.style.opacity=0.7;
+  step();
+}
+function stop(finished){
+  playing = false; clearTimeout(timer); mic.classList.remove('live');
+  playBtn.textContent = finished ? '↻ Replay the call' : '▶ Resume';
+  playBtn.style.opacity = 1;
+  statusEl.textContent = finished ? 'Call ended · disposition logged · audit trail written' : 'Paused';
+}
+playBtn.onclick = ()=> playing ? stop(false) : start();
+resetBtn.onclick = ()=>{ stop(false); convo.innerHTML=''; idx=0; statusEl.textContent='Silero VAD idle · Saaras streaming ready'; playBtn.textContent='▶ Play the call'; };
+</script>
+</body>
+</html>

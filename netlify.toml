@@ -1,0 +1,15 @@
+# Static multi-page site — no build step; publish the repo root.
+[build]
+  publish = "."
+  command = ""
+
+# Serve clean URLs (/setu → setu.html) and tidy redirects.
+[[redirects]]
+  from = "/setu"
+  to = "/setu.html"
+  status = 200
+
+[[redirects]]
+  from = "/vaani"
+  to = "/vaani.html"
+  status = 200

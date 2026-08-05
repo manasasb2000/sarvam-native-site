@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setu + Vaani — Sarvam-native AI infrastructure</title>
+<meta name="description" content="Two Sarvam-native projects: Setu, an open-source MCP server exposing Sarvam's API surface as typed tools, and Vaani, a real-time code-mixed voice agent for BFSI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>body{font-family:'Inter',var(--sans)} .mono,code,.field input,.diagram,.output{font-family:'JetBrains Mono',var(--mono)}</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Sarvam&nbsp;Native</div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="setu.html">Setu</a>
+      <a href="vaani.html">Vaani</a>
+      <a href="#stack">Stack</a>
+      <a class="cta" href="setu.html">Live demos →</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="pulse"></span> Built on Sarvam AI · India-first speech &amp; language stack</div>
+    <h1 class="title">Voice &amp; language infrastructure,<br>built Sarvam-native.</h1>
+    <p class="lead">Two production-grade projects: an open-source <strong>MCP server</strong> that hands any agent Sarvam's full API surface, and a real-time <strong>code-mixed voice agent</strong> for banking &amp; financial services.</p>
+    <div class="btns">
+      <a class="btn primary" href="setu.html">Explore Setu →</a>
+      <a class="btn" href="vaani.html">Try Vaani demo →</a>
+    </div>
+  </div>
+</header>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Two projects</div>
+      <h2>An MCP server and a voice agent</h2>
+      <p>One gives every agent Sarvam's tools. The other puts them to work on a live, low-latency phone call.</p>
+    </div>
+    <div class="projects">
+
+      <div class="pcard setu">
+        <span class="ptag">01 · Open-source infra</span>
+        <h3>Setu</h3>
+        <div class="sub">Sarvam MCP Server</div>
+        <div class="chips">
+          <span class="chip">FastMCP</span><span class="chip">Python 3.11+</span><span class="chip">Pydantic v2</span><span class="chip">OpenTelemetry</span>
+        </div>
+        <ul>
+          <li>Exposes Sarvam speech, translation, chat &amp; document tools to any MCP client — Claude Desktop, Cursor, LangGraph.</li>
+          <li>Typed Pydantic in/out on every tool, with retries, rate-limiting and a mock mode.</li>
+          <li>Per-call cost (INR) and latency emitted as OpenTelemetry span attributes — every call is observable and priced.</li>
+        </ul>
+        <div class="foot">
+          <a class="btn primary" href="setu.html">Interactive tool explorer →</a>
+        </div>
+      </div>
+
+      <div class="pcard vaani">
+        <span class="ptag">02 · Flagship demo</span>
+        <h3>Vaani</h3>
+        <div class="sub">Multilingual Voice Agent for BFSI</div>
+        <div class="chips">
+          <span class="chip">Pipecat</span><span class="chip">Saaras v3</span><span class="chip">Sarvam-105B</span><span class="chip">Bulbul v3</span>
+        </div>
+        <ul>
+          <li>A caller speaks Hindi / Hinglish; the agent answers grounded questions over policy docs in real time.</li>
+          <li>Calls backend tools (account status, EMI, callbacks) and escalates to a human on low confidence.</li>
+          <li>Evals-first: WER, tool-call accuracy, groundedness, p50/p95 latency &amp; cost per interaction.</li>
+        </ul>
+        <div class="foot">
+          <a class="btn primary" href="vaani.html">Watch the conversation →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The Sarvam stack</div>
+      <h2>One provider, the whole pipeline</h2>
+      <p>Speech-to-text, reasoning, text-to-speech, translation and document parsing — all Sarvam models.</p>
+    </div>
+    <div class="stack-grid">
+      <div class="scell"><div class="n">Saaras v3</div><div class="d">STT · codemix</div></div>
+      <div class="scell"><div class="n">Bulbul v3</div><div class="d">TTS · streaming</div></div>
+      <div class="scell"><div class="n">Sarvam-105B</div><div class="d">agents · tools</div></div>
+      <div class="scell"><div class="n">Sarvam-30B</div><div class="d">fast turns</div></div>
+      <div class="scell"><div class="n">Mayura v1</div><div class="d">translation</div></div>
+      <div class="scell"><div class="n">Parse</div><div class="d">doc → JSON</div></div>
+      <div class="scell"><div class="n">sarvam-m</div><div class="d">24B · open</div></div>
+      <div class="scell"><div class="n">Lang ID</div><div class="d">detect script</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Engineering posture</div>
+      <h2>Built like production, not a prototype</h2>
+    </div>
+    <div class="stack-grid">
+      <div class="scell"><div class="n">Typed everywhere</div><div class="d">pydantic v2 · mypy strict</div></div>
+      <div class="scell"><div class="n">Observable</div><div class="d">OTel traces + cost/latency</div></div>
+      <div class="scell"><div class="n">Tested</div><div class="d">pytest · 80%+ core</div></div>
+      <div class="scell"><div class="n">Reliable</div><div class="d">retries · rate-limit · mock</div></div>
+      <div class="scell"><div class="n">Evals-first</div><div class="d">WER · groundedness</div></div>
+      <div class="scell"><div class="n">Compliant</div><div class="d">PII redaction · audit trail</div></div>
+      <div class="scell"><div class="n">Containerised</div><div class="d">Docker · compose</div></div>
+      <div class="scell"><div class="n">CI green</div><div class="d">GitHub Actions</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="muted">Setu + Vaani — Sarvam-native AI infrastructure. Demos are interactive mockups; core pipelines are Python.</div>
+    <div class="links">
+      <a href="setu.html">Setu</a>
+      <a href="vaani.html">Vaani</a>
+      <a href="#projects">Top</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
