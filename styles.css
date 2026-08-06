@@ -226,6 +226,10 @@ footer .links a:hover { color: var(--text); }
   z-index: 100; box-shadow: 0 0 12px rgba(109,139,255,0.6); transition: width 0.08s linear;
 }
 
+/* ---- Interactive flow-field canvas (iron-filings around cursor) ---- */
+.field { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.9; }
+@media (hover: none) { .field { display: none; } }
+
 /* ---- Cursor spotlight (follows mouse, desktop only) ---- */
 .spotlight {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;

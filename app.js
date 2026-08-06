@@ -6,8 +6,12 @@
 (function () {
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
 
-  /* ---- inject background FX + spotlight + scroll bar (once) ---- */
+  /* shared pointer state (used by spotlight + flow field) */
+  var M = { x: innerWidth / 2, y: innerHeight * 0.35, active: false };
+
+  /* ---- inject background FX + flow-field canvas + spotlight + scroll bar ---- */
   function injectChrome() {
     if (!document.querySelector(".bg-fx")) {
       var fx = document.createElement("div");
@@ -15,6 +19,11 @@
       fx.innerHTML =
         '<div class="grid"></div><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div>';
       document.body.insertBefore(fx, document.body.firstChild);
+    }
+    if (!document.querySelector(".field")) {
+      var cv = document.createElement("canvas");
+      cv.className = "field";
+      document.body.insertBefore(cv, document.body.firstChild);
     }
     if (!document.querySelector(".spotlight")) {
       var sp = document.createElement("div");
@@ -28,20 +37,93 @@
     }
   }
 
-  /* ---- cursor spotlight ---- */
+  /* ---- pointer tracking (spotlight + field) ---- */
   function cursor() {
-    if (reduce || !window.matchMedia("(hover: hover)").matches) return;
-    var raf = null, x = 0, y = 0;
+    if (!hover) return;
+    var raf = null;
     window.addEventListener("mousemove", function (e) {
-      x = e.clientX; y = e.clientY;
+      M.x = e.clientX; M.y = e.clientY; M.active = true;
       document.body.classList.add("has-cursor");
-      if (raf) return;
+      if (raf || reduce) return;
       raf = requestAnimationFrame(function () {
-        document.documentElement.style.setProperty("--mx", x + "px");
-        document.documentElement.style.setProperty("--my", y + "px");
+        document.documentElement.style.setProperty("--mx", M.x + "px");
+        document.documentElement.style.setProperty("--my", M.y + "px");
         raf = null;
       });
     });
+    window.addEventListener("mouseleave", function () { M.active = false; });
+  }
+
+  /* ---- interactive flow-field (iron-filings around the cursor) ---- */
+  function field() {
+    var canvas = document.querySelector(".field");
+    if (!canvas || reduce) return;               // static for reduced-motion
+    var ctx = canvas.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var GAP = 30;                                 // grid spacing (px)
+    var LEN = 9;                                  // base stroke half-length
+    var RADIUS = 190;                             // cursor influence radius
+    var cols = [];                                // precomputed base angles
+    var W = 0, H = 0;
+
+    function build() {
+      W = canvas.clientWidth = window.innerWidth;
+      H = canvas.clientHeight = window.innerHeight;
+      canvas.width = Math.floor(W * dpr);
+      canvas.height = Math.floor(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // base angle per cell — a calm woven pattern (deterministic)
+      cols = [];
+      for (var x = GAP / 2; x < W; x += GAP) {
+        for (var y = GAP / 2; y < H; y += GAP) {
+          var a = Math.sin(x * 0.015) * Math.cos(y * 0.017) * Math.PI; // smooth field
+          cols.push({ x: x, y: y, a: a });
+        }
+      }
+    }
+
+    function shortestLerp(a, b, t) {
+      var d = b - a;
+      while (d > Math.PI) d -= 2 * Math.PI;
+      while (d < -Math.PI) d += 2 * Math.PI;
+      return a + d * t;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var mx = M.x, my = M.y;
+      var r2 = RADIUS * RADIUS;
+      for (var i = 0; i < cols.length; i++) {
+        var p = cols[i];
+        var dx = p.x - mx, dy = p.y - my;
+        var dist2 = dx * dx + dy * dy;
+        var w = 0, ang = p.a, len = LEN, alpha = 0.10;
+        if (M.active && dist2 < r2 * 2.2) {
+          var dist = Math.sqrt(dist2);
+          w = Math.max(0, 1 - dist / RADIUS);      // 1 at cursor → 0 at edge
+          w = w * w;                                // ease
+          var radial = Math.atan2(dy, dx);          // point AWAY from cursor
+          ang = shortestLerp(p.a, radial, w);
+          len = LEN + w * 12;                        // stretch near cursor
+          alpha = 0.10 + w * 0.55;                   // brighten near cursor
+        }
+        var ca = Math.cos(ang) * len, sa = Math.sin(ang) * len;
+        // colour shifts blue→violet with influence
+        var g = Math.round(150 + w * 20), b = Math.round(230 + w * 20);
+        ctx.strokeStyle = "rgba(" + (120 + Math.round(w * 40)) + "," + g + "," + b + "," + alpha + ")";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x - ca, p.y - sa);
+        ctx.lineTo(p.x + ca, p.y + sa);
+        ctx.stroke();
+      }
+      requestAnimationFrame(draw);
+    }
+
+    var rt;
+    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(build, 150); });
+    build();
+    requestAnimationFrame(draw);
   }
 
   /* ---- scroll progress + nav state ---- */
@@ -84,7 +166,7 @@
     });
   }
 
-  /* ---- count-up numbers ([data-count] holds the target; text is the suffix) ---- */
+  /* ---- count-up numbers ---- */
   function counters() {
     var nums = document.querySelectorAll("[data-count]");
     if (!nums.length) return;
@@ -115,7 +197,7 @@
 
   /* ---- card tilt on pointer ---- */
   function tilt() {
-    if (reduce || !window.matchMedia("(hover: hover)").matches) return;
+    if (reduce || !hover) return;
     document.querySelectorAll(".tilt").forEach(function (card) {
       card.addEventListener("mousemove", function (e) {
         var r = card.getBoundingClientRect();
@@ -153,6 +235,7 @@
   function init() {
     injectChrome();
     cursor();
+    field();
     scrollUI();
     stagger();
     reveals();
