@@ -20,9 +20,9 @@
         '<div class="grid"></div><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div>';
       document.body.insertBefore(fx, document.body.firstChild);
     }
-    if (!document.querySelector(".field")) {
+    if (!document.querySelector(".flowfield")) {
       var cv = document.createElement("canvas");
-      cv.className = "field";
+      cv.className = "flowfield";
       document.body.insertBefore(cv, document.body.firstChild);
     }
     if (!document.querySelector(".spotlight")) {
@@ -56,7 +56,7 @@
 
   /* ---- interactive flow-field (iron-filings around the cursor) ---- */
   function field() {
-    var canvas = document.querySelector(".field");
+    var canvas = document.querySelector(".flowfield");
     if (!canvas || reduce) return;               // static for reduced-motion
     var ctx = canvas.getContext("2d");
     var dpr = Math.min(window.devicePixelRatio || 1, 2);

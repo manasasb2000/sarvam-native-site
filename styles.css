@@ -227,8 +227,8 @@ footer .links a:hover { color: var(--text); }
 }
 
 /* ---- Interactive flow-field canvas (iron-filings around cursor) ---- */
-.field { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.9; }
-@media (hover: none) { .field { display: none; } }
+.flowfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.9; }
+@media (hover: none) { .flowfield { display: none; } }
 
 /* ---- Cursor spotlight (follows mouse, desktop only) ---- */
 .spotlight {
