@@ -343,3 +343,31 @@ nav.scrolled { background: rgba(10,11,15,0.9); border-bottom-color: var(--border
 
 /* section fade-in dividers */
 .rule { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 8px 0; }
+
+/* ---- Hover-enlarge on pills / chips / stack cells (all pages) ---- */
+.pill, .chip, .tagpill {
+  transition: transform 0.16s cubic-bezier(.2,.7,.2,1), border-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease;
+  cursor: default; display: inline-flex; align-items: center;
+}
+.pill:hover, .chip:hover {
+  transform: scale(1.12); border-color: var(--accent);
+  color: var(--text); box-shadow: 0 4px 18px rgba(109,139,255,0.28); z-index: 2;
+}
+.pill.ok:hover { border-color: var(--green); box-shadow: 0 4px 18px rgba(74,222,128,0.28); }
+.tagpill:hover { transform: scale(1.15); }
+.chips { position: relative; } /* keep scaled chip above siblings */
+
+/* Stack cells + stat cards lift on hover too */
+.scell { transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
+.scell:hover { transform: translateY(-4px) scale(1.03); border-color: #3a3f4d; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+.statband .stat { transition: transform 0.18s ease, border-color 0.18s ease; }
+.statband .stat:hover { transform: translateY(-4px) scale(1.03); border-color: #3a3f4d; }
+.metric { transition: transform 0.18s ease, border-color 0.18s ease; }
+.metric:hover { transform: translateY(-4px) scale(1.03); border-color: #3a3f4d; }
+
+/* buttons pop a touch more on hover */
+.btn { transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease; }
+.btn:hover { transform: translateY(-2px) scale(1.04); }
+.btn.primary:hover { transform: translateY(-2px) scale(1.05); }
+.install-hero { transition: transform 0.16s ease, border-color 0.16s ease; }
+.install-hero:hover { transform: scale(1.02); border-color: var(--accent); }
