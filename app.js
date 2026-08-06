@@ -67,8 +67,10 @@
     var W = 0, H = 0;
 
     function build() {
-      W = canvas.clientWidth = window.innerWidth;
-      H = canvas.clientHeight = window.innerHeight;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
       canvas.width = Math.floor(W * dpr);
       canvas.height = Math.floor(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -232,16 +234,21 @@
     panels.forEach(function (p) { io.observe(p); });
   }
 
+  function safe(fn) { try { fn(); } catch (e) { if (window.console) console.error("[app.js]", e); } }
+
   function init() {
-    injectChrome();
-    cursor();
-    field();
-    scrollUI();
-    stagger();
-    reveals();
-    counters();
-    tilt();
-    livePanels();
+    // Content-critical first: these MUST run so nothing stays hidden,
+    // even if a decorative effect below throws.
+    safe(injectChrome);
+    safe(stagger);
+    safe(reveals);
+    safe(counters);
+    safe(scrollUI);
+    safe(tilt);
+    safe(livePanels);
+    // Decorative background effects last (isolated in try/catch).
+    safe(cursor);
+    safe(field);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
