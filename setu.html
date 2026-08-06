@@ -83,10 +83,18 @@
   </div>
 </header>
 
+<!-- Marquee ticker band -->
+<div class="marquee reveal">
+  <div class="marquee-track">
+    <span>sarvam_transcribe</span><span>sarvam_speak</span><span>sarvam_translate</span><span>sarvam_transliterate</span><span>sarvam_identify_language</span><span>sarvam_chat</span><span>sarvam_parse_document</span><span>setu_ping</span>
+    <span>sarvam_transcribe</span><span>sarvam_speak</span><span>sarvam_translate</span><span>sarvam_transliterate</span><span>sarvam_identify_language</span><span>sarvam_chat</span><span>sarvam_parse_document</span><span>setu_ping</span>
+  </div>
+</div>
+
 <!-- ── What it is / uses ─────────────────────────────────────────── -->
 <section style="padding-top:26px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:24px">
+    <div class="section-head reveal" style="margin-bottom:24px">
       <div class="kicker">What you get</div>
       <h2>Sarvam's Indic AI stack, as agent tools</h2>
       <p>Install one package and any MCP agent can transcribe Hindi calls, speak replies, translate &amp; transliterate, detect language, chat with tool-calling, and digitise KYC documents — every call typed, retried, and priced.</p>
@@ -97,7 +105,7 @@
 <!-- ── Install & run ─────────────────────────────────────────────── -->
 <section style="padding-top:6px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:24px">
+    <div class="section-head reveal" style="margin-bottom:24px">
       <div class="kicker">Quickstart</div>
       <h2>Install &amp; run in 3 steps</h2>
       <p>Defaults to <code style="font-family:'JetBrains Mono',monospace">mock</code> mode — deterministic fixtures, no API key, no credits burned.</p>
@@ -165,7 +173,7 @@
 <!-- ── Interactive explorer ──────────────────────────────────────── -->
 <section id="tools" style="padding-top:26px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:20px">
+    <div class="section-head reveal" style="margin-bottom:20px">
       <div class="kicker">Try it live</div>
       <h2>Interactive tool explorer</h2>
       <p>Pick a tool, tweak the inputs, and run it — right here in your browser (mock fixtures, no key needed).</p>
@@ -190,7 +198,7 @@
 <!-- ── The tools ─────────────────────────────────────────────────── -->
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:20px">
+    <div class="section-head reveal" style="margin-bottom:20px">
       <div class="kicker">The tool surface</div>
       <h2>8 typed tools, one install</h2>
     </div>
@@ -218,7 +226,7 @@
 <!-- ── How it works ──────────────────────────────────────────────── -->
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:24px">
+    <div class="section-head reveal" style="margin-bottom:24px">
       <div class="kicker">How it works</div>
       <h2>Every call: validated, retried, priced</h2>
     </div>
@@ -239,7 +247,7 @@
    Sarvam APIs — Saaras · Bulbul · Mayura · Sarvam-30B/105B · Parse</div>
 
     <div class="info-grid">
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Reliability</h4>
         <ul>
           <li>Exponential backoff + jitter on 5xx / network errors; never retries 4xx except 429.</li>
@@ -247,7 +255,7 @@
           <li>Typed errors surfaced to the agent on final failure.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Observability</h4>
         <ul>
           <li>Every call wrapped in an OpenTelemetry span.</li>
@@ -255,7 +263,7 @@
           <li>Maintained INR pricing table per model / endpoint.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Two transports</h4>
         <ul>
           <li><code>stdio</code> for local IDE / desktop agents.</li>
@@ -263,7 +271,7 @@
           <li>Both served from one FastMCP server object.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Mock vs live</h4>
         <ul>
           <li><code>SETU_MODE=mock|live</code> switch.</li>
@@ -278,7 +286,7 @@
 <!-- ── Deploy ────────────────────────────────────────────────────── -->
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:20px">
+    <div class="section-head reveal" style="margin-bottom:20px">
       <div class="kicker">Deploy anywhere</div>
       <h2>Run it as a container</h2>
       <p>A multi-stage, non-root image serves the HTTP transport out of the box.</p>
@@ -524,5 +532,6 @@ function runTool(){
 renderList();
 renderPanel();
 </script>
+<script src="app.js" defer></script>
 </body>
 </html>

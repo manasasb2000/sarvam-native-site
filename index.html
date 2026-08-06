@@ -8,7 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>body{font-family:'Inter',var(--sans)} .mono,code,.field input,.diagram,.output{font-family:'JetBrains Mono',var(--mono)}</style>
+<style>
+  body{font-family:'Inter',var(--sans)} .mono,code,.field input,.diagram,.output{font-family:'JetBrains Mono',var(--mono)}
+  /* page-local helpers */
+  .hero .btns{margin-top:32px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:36px;align-items:center;text-align:left;margin-top:20px}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:28px}.hero{text-align:center}.hero .btns{justify-content:center}}
+  .project-badge{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.1em}
+</style>
 </head>
 <body>
 <nav>
@@ -26,26 +33,71 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow"><span class="pulse"></span> Built on Sarvam AI · India-first speech &amp; language stack</div>
-    <h1 class="title">Voice &amp; language infrastructure,<br>built Sarvam-native.</h1>
-    <p class="lead">Two production-grade projects: an open-source <strong>MCP server</strong> that hands any agent Sarvam's full API surface, and a real-time <strong>code-mixed voice agent</strong> for banking &amp; financial services.</p>
-    <div class="btns">
-      <a class="btn primary" href="setu.html">Explore Setu →</a>
-      <a class="btn" href="vaani.html">Try Vaani demo →</a>
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal"><span class="pulse"></span> Built on Sarvam AI · India-first speech &amp; language stack</div>
+        <h1 class="title reveal" style="--i:1;text-align:left">Voice &amp; language infrastructure,<br>built Sarvam-native.</h1>
+        <p class="lead reveal" style="--i:2;margin-left:0;text-align:left">Two production-grade projects: an open-source <strong>MCP server</strong> that hands any agent Sarvam's full API surface, and a real-time <strong>code-mixed voice agent</strong> for banking &amp; financial services.</p>
+        <div class="btns reveal" style="--i:3;justify-content:flex-start">
+          <a class="btn primary" href="setu.html">Explore Setu →</a>
+          <a class="btn" href="vaani.html">Try Vaani demo →</a>
+        </div>
+      </div>
+
+      <!-- Live session panel — plays itself when scrolled into view -->
+      <div class="live-panel reveal right glow tilt" style="--i:2" data-autoplay>
+        <div class="live-head">
+          <span class="live-dot"></span> vaani · live call
+          <span class="spacer">req · collections-line / +91••••4412</span>
+        </div>
+        <div class="live-body">
+          <div class="live-row"><span class="tag">STT</span><span class="val">Saaras v3 · "Mera EMI kitna bacha hai?"</span></div>
+          <div class="live-row"><span class="tag">Route</span><span class="val">intent=account_action → Sarvam-105B</span></div>
+          <div class="live-row ok"><span class="tag">RAG</span><span class="val">pgvector top-k · clause 7.2 · grounded ✓</span></div>
+          <div class="live-row"><span class="tag">Tool</span><span class="val">get_emi_details() → ₹4,250</span></div>
+          <div class="live-row risk"><span class="tag">Guard</span><span class="val">waiver request · confidence 0.41 &lt; 0.6</span></div>
+          <div class="live-row"><span class="tag">TTS</span><span class="val">Bulbul v3 · anushka · streaming</span></div>
+        </div>
+        <div class="verdict" style="opacity:0;transition:opacity .4s">
+          <span class="score">HITL</span>
+          <span class="txt">escalate_to_human()</span>
+          <span class="halt">warm transfer</span>
+        </div>
+      </div>
     </div>
   </div>
 </header>
 
+<!-- Marquee ticker band -->
+<div class="marquee reveal">
+  <div class="marquee-track">
+    <span>Saaras v3 STT</span><span>Bulbul v3 TTS</span><span>Sarvam-105B</span><span>Sarvam-30B</span><span>Mayura translate</span><span>Parse · docs</span><span>MCP tools</span><span>RAG · pgvector</span><span>Evals-first</span><span>PII redaction</span>
+    <span>Saaras v3 STT</span><span>Bulbul v3 TTS</span><span>Sarvam-105B</span><span>Sarvam-30B</span><span>Mayura translate</span><span>Parse · docs</span><span>MCP tools</span><span>RAG · pgvector</span><span>Evals-first</span><span>PII redaction</span>
+  </div>
+</div>
+
+<!-- Count-up stat band -->
+<section style="padding-top:36px">
+  <div class="wrap">
+    <div class="statband" data-stagger>
+      <div class="stat reveal"><div class="num"><span data-count="8">0</span></div><div class="lbl">typed MCP tools</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="14" data-suffix="">0</span></div><div class="lbl">milestones shipped</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="87" data-suffix="%">0</span></div><div class="lbl">test coverage</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="1500" data-suffix="ms">0</span></div><div class="lbl">latency budget</div></div>
+    </div>
+  </div>
+</section>
+
 <section id="projects">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">Two projects</div>
       <h2>An MCP server and a voice agent</h2>
       <p>One gives every agent Sarvam's tools. The other puts them to work on a live, low-latency phone call.</p>
     </div>
-    <div class="projects">
+    <div class="projects" data-stagger>
 
-      <div class="pcard setu">
+      <div class="pcard setu reveal glow tilt">
         <span class="ptag">01 · Open-source infra</span>
         <h3>Setu</h3>
         <div class="sub">Sarvam MCP Server</div>
@@ -62,7 +114,7 @@
         </div>
       </div>
 
-      <div class="pcard vaani">
+      <div class="pcard vaani reveal glow tilt">
         <span class="ptag">02 · Flagship demo</span>
         <h3>Vaani</h3>
         <div class="sub">Multilingual Voice Agent for BFSI</div>
@@ -83,41 +135,65 @@
   </div>
 </section>
 
+<!-- Process stepper: how a turn flows -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">One turn, end to end</div>
+      <h2>From a caller's words to a grounded, priced answer</h2>
+      <p>Every turn runs through the same disciplined pipeline — instrumented, validated, and escalated when unsure.</p>
+    </div>
+    <div class="process" data-stagger>
+      <div class="pstep reveal"><div class="pn">01</div><h5>Listen</h5><p>Saaras v3 transcribes code-mixed audio; the router picks an intent and a model tier.</p><span class="arrow">→</span></div>
+      <div class="pstep reveal"><div class="pn">02</div><h5>Ground</h5><p>RAG retrieves policy context; a groundedness guard blocks any answer not supported by it.</p><span class="arrow">→</span></div>
+      <div class="pstep reveal"><div class="pn">03</div><h5>Act</h5><p>Sarvam-105B calls validated backend tools; sensitive actions route to a human.</p><span class="arrow">→</span></div>
+      <div class="pstep reveal"><div class="pn">04</div><h5>Speak</h5><p>Bulbul v3 streams the reply; cost, latency &amp; PII-redacted memory are written.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee rev reveal">
+  <div class="marquee-track">
+    <span>typed everywhere</span><span>observable</span><span>tested</span><span>reliable</span><span>evals-first</span><span>compliant</span><span>containerised</span><span>CI green</span>
+    <span>typed everywhere</span><span>observable</span><span>tested</span><span>reliable</span><span>evals-first</span><span>compliant</span><span>containerised</span><span>CI green</span>
+  </div>
+</div>
+
 <section id="stack">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">The Sarvam stack</div>
       <h2>One provider, the whole pipeline</h2>
       <p>Speech-to-text, reasoning, text-to-speech, translation and document parsing — all Sarvam models.</p>
     </div>
-    <div class="stack-grid">
-      <div class="scell"><div class="n">Saaras v3</div><div class="d">STT · codemix</div></div>
-      <div class="scell"><div class="n">Bulbul v3</div><div class="d">TTS · streaming</div></div>
-      <div class="scell"><div class="n">Sarvam-105B</div><div class="d">agents · tools</div></div>
-      <div class="scell"><div class="n">Sarvam-30B</div><div class="d">fast turns</div></div>
-      <div class="scell"><div class="n">Mayura v1</div><div class="d">translation</div></div>
-      <div class="scell"><div class="n">Parse</div><div class="d">doc → JSON</div></div>
-      <div class="scell"><div class="n">sarvam-m</div><div class="d">24B · open</div></div>
-      <div class="scell"><div class="n">Lang ID</div><div class="d">detect script</div></div>
+    <div class="stack-grid" data-stagger>
+      <div class="scell reveal"><div class="n">Saaras v3</div><div class="d">STT · codemix</div></div>
+      <div class="scell reveal"><div class="n">Bulbul v3</div><div class="d">TTS · streaming</div></div>
+      <div class="scell reveal"><div class="n">Sarvam-105B</div><div class="d">agents · tools</div></div>
+      <div class="scell reveal"><div class="n">Sarvam-30B</div><div class="d">fast turns</div></div>
+      <div class="scell reveal"><div class="n">Mayura v1</div><div class="d">translation</div></div>
+      <div class="scell reveal"><div class="n">Parse</div><div class="d">doc → JSON</div></div>
+      <div class="scell reveal"><div class="n">sarvam-m</div><div class="d">24B · open</div></div>
+      <div class="scell reveal"><div class="n">Lang ID</div><div class="d">detect script</div></div>
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">Engineering posture</div>
       <h2>Built like production, not a prototype</h2>
     </div>
-    <div class="stack-grid">
-      <div class="scell"><div class="n">Typed everywhere</div><div class="d">pydantic v2 · mypy strict</div></div>
-      <div class="scell"><div class="n">Observable</div><div class="d">OTel traces + cost/latency</div></div>
-      <div class="scell"><div class="n">Tested</div><div class="d">pytest · 80%+ core</div></div>
-      <div class="scell"><div class="n">Reliable</div><div class="d">retries · rate-limit · mock</div></div>
-      <div class="scell"><div class="n">Evals-first</div><div class="d">WER · groundedness</div></div>
-      <div class="scell"><div class="n">Compliant</div><div class="d">PII redaction · audit trail</div></div>
-      <div class="scell"><div class="n">Containerised</div><div class="d">Docker · compose</div></div>
-      <div class="scell"><div class="n">CI green</div><div class="d">GitHub Actions</div></div>
+    <div class="stack-grid" data-stagger>
+      <div class="scell reveal"><div class="n">Typed everywhere</div><div class="d">pydantic v2 · mypy strict</div></div>
+      <div class="scell reveal"><div class="n">Observable</div><div class="d">OTel traces + cost/latency</div></div>
+      <div class="scell reveal"><div class="n">Tested</div><div class="d">pytest · 80%+ core</div></div>
+      <div class="scell reveal"><div class="n">Reliable</div><div class="d">retries · rate-limit · mock</div></div>
+      <div class="scell reveal"><div class="n">Evals-first</div><div class="d">WER · groundedness</div></div>
+      <div class="scell reveal"><div class="n">Compliant</div><div class="d">PII redaction · audit trail</div></div>
+      <div class="scell reveal"><div class="n">Containerised</div><div class="d">Docker · compose</div></div>
+      <div class="scell reveal"><div class="n">CI green</div><div class="d">GitHub Actions</div></div>
     </div>
   </div>
 </section>
@@ -132,5 +208,7 @@
     </div>
   </div>
 </footer>
+
+<script src="app.js" defer></script>
 </body>
 </html>

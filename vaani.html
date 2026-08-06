@@ -57,6 +57,14 @@
   </div>
 </header>
 
+<!-- Marquee ticker band -->
+<div class="marquee reveal">
+  <div class="marquee-track">
+    <span>Saaras STT</span><span>Sarvam-105B tools</span><span>Bulbul TTS</span><span>RAG · pgvector</span><span>WhatsApp + telephony</span><span>lead-qual / KYC / booking</span><span>PII redaction</span><span>evals · WER · funnel</span><span>HITL</span>
+    <span>Saaras STT</span><span>Sarvam-105B tools</span><span>Bulbul TTS</span><span>RAG · pgvector</span><span>WhatsApp + telephony</span><span>lead-qual / KYC / booking</span><span>PII redaction</span><span>evals · WER · funnel</span><span>HITL</span>
+  </div>
+</div>
+
 <section id="call" style="padding-top:28px">
   <div class="wrap">
     <div class="demo-box">
@@ -83,7 +91,7 @@
 
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:24px">
+    <div class="section-head reveal" style="margin-bottom:24px">
       <div class="kicker">Under the hood</div>
       <h2>The Pipecat pipeline</h2>
     </div>
@@ -103,7 +111,7 @@
    OpenTelemetry traces + PII redaction span the whole pipeline</div>
 
     <div class="info-grid">
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Latency budget &lt; ~1.5s</h4>
         <ul>
           <li>Streaming STT partials; tokens streamed straight into the Bulbul WebSocket.</li>
@@ -111,7 +119,7 @@
           <li>First TTS byte ~sub-250ms.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Grounding &amp; tools</h4>
         <ul>
           <li>Answers only from retrieved KB chunks — deflects to a human when unsure.</li>
@@ -119,7 +127,7 @@
           <li>Every tool-call argument validated against a Pydantic schema before execution.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Named failure modes</h4>
         <ul>
           <li>Noisy code-mix WER, hallucinated tool args, turn-taking latency spikes, double-talk.</li>
@@ -127,7 +135,7 @@
           <li>Per-call budget + max-turn guard against runaway cost.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Evals-first harness</h4>
         <ul>
           <li>WER (jiwer), tool-call accuracy, groundedness (RAGAs / DeepEval).</li>
@@ -142,27 +150,27 @@
 <!-- ── Samvaad channels ─────────────────────────────────────────── -->
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:24px">
+    <div class="section-head reveal" style="margin-bottom:24px">
       <div class="kicker">Multi-channel · Samvaad shape</div>
       <h2>One brain, every channel</h2>
       <p>Voice, WhatsApp (voice + chat in one thread), and telephony — sharing one memory, so a caller can switch mid-journey.</p>
     </div>
     <div class="info-grid">
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>WhatsApp — voice + chat</h4>
         <ul>
           <li>Chat replies in text; voice notes get a spoken (TTS) reply.</li>
           <li>Powered by Meta's Business Calling API shape.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Hybrid WhatsApp + telephony</h4>
         <ul>
           <li>A phone call and a WhatsApp chat on the same <code>session_id</code> share memory.</li>
           <li>Switch channels without losing context.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Multimodal ingest</h4>
         <ul>
           <li>Audio → Setu <code>sarvam_transcribe</code>.</li>
@@ -170,7 +178,7 @@
           <li>Text → passthrough.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Custom memory</h4>
         <ul>
           <li>Workflow progress, user context, and execution variables across turns.</li>
@@ -184,34 +192,34 @@
 <!-- ── Guided flows ─────────────────────────────────────────────── -->
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:24px">
+    <div class="section-head reveal" style="margin-bottom:24px">
       <div class="kicker">Guided flows</div>
       <h2>Structured, multi-turn tasks</h2>
       <p>A slot-filling engine drives each use-case with per-slot validation and completion tracking.</p>
     </div>
     <div class="info-grid">
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Lead qualification</h4>
         <ul>
           <li>Captures name, loan type, income, city.</li>
           <li>Scores the lead (qualified ≥ 60/100).</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>KYC / application</h4>
         <ul>
           <li>Guided form-completion with <strong>PAN</strong> and <strong>DOB</strong> validation.</li>
           <li>Re-asks on invalid input.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Booking</h4>
         <ul>
           <li>Branch, date, and time (24-hour) capture.</li>
           <li>Confirmation on completion.</li>
         </ul>
       </div>
-      <div class="info-card">
+      <div class="info-card reveal glow">
         <h4>Post-call bus</h4>
         <ul>
           <li>On call end: summary + structured disposition + audit trail.</li>
@@ -225,22 +233,22 @@
 <!-- ── Evals report ─────────────────────────────────────────────── -->
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:20px">
+    <div class="section-head reveal" style="margin-bottom:20px">
       <div class="kicker">Evals-first</div>
       <h2>Every build is scored</h2>
       <p>The <code>vaani-evals</code> runner reports these on the curated suite; a lite version gates CI.</p>
     </div>
-    <div class="metrics">
-      <div class="metric"><div class="v">0.15</div><div class="l">WER</div></div>
-      <div class="metric"><div class="v">100%</div><div class="l">tool-call acc</div></div>
-      <div class="metric"><div class="v">100%</div><div class="l">groundedness</div></div>
-      <div class="metric"><div class="v">100%</div><div class="l">intent acc</div></div>
+    <div class="metrics" data-stagger>
+      <div class="metric reveal"><div class="v"><span data-count="0.15" data-decimals="2">0</span></div><div class="l">WER</div></div>
+      <div class="metric reveal"><div class="v"><span data-count="100" data-suffix="%">0</span></div><div class="l">tool-call acc</div></div>
+      <div class="metric reveal"><div class="v"><span data-count="100" data-suffix="%">0</span></div><div class="l">groundedness</div></div>
+      <div class="metric reveal"><div class="v"><span data-count="100" data-suffix="%">0</span></div><div class="l">intent acc</div></div>
     </div>
-    <div class="metrics" style="margin-top:12px">
-      <div class="metric"><div class="v">p50/p95</div><div class="l">latency tracked</div></div>
-      <div class="metric"><div class="v">₹/turn</div><div class="l">cost per interaction</div></div>
-      <div class="metric"><div class="v">funnel</div><div class="l">drop-off + A/B lift</div></div>
-      <div class="metric"><div class="v">87%</div><div class="l">test coverage</div></div>
+    <div class="metrics" data-stagger style="margin-top:12px">
+      <div class="metric reveal"><div class="v">p50/p95</div><div class="l">latency tracked</div></div>
+      <div class="metric reveal"><div class="v">₹/turn</div><div class="l">cost per interaction</div></div>
+      <div class="metric reveal"><div class="v">funnel</div><div class="l">drop-off + A/B lift</div></div>
+      <div class="metric reveal"><div class="v"><span data-count="87" data-suffix="%">0</span></div><div class="l">test coverage</div></div>
     </div>
   </div>
 </section>
@@ -248,7 +256,7 @@
 <!-- ── Run it ───────────────────────────────────────────────────── -->
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:16px">
+    <div class="section-head reveal" style="margin-bottom:16px">
       <div class="kicker">Run it</div>
       <h2>Mock mode — no keys, no infra</h2>
     </div>
@@ -339,5 +347,6 @@ function stop(finished){
 playBtn.onclick = ()=> playing ? stop(false) : start();
 resetBtn.onclick = ()=>{ stop(false); convo.innerHTML=''; idx=0; statusEl.textContent='Silero VAD idle · Saaras streaming ready'; playBtn.textContent='▶ Play the call'; };
 </script>
+<script src="app.js" defer></script>
 </body>
 </html>
